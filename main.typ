@@ -18,14 +18,14 @@
 
 #show: template.with(
   // ── Identificação (obrigatórios) ────────────────────────────────────────────
-  titulo: "Título do Trabalho de Conclusão de Curso",
-  autor: "Nome Completo do Aluno",
-  orientador: "Prof. Dr. Nome do Orientador",
+  titulo: "Desempenho computacional em microsserviços Java: Estudo comparativo entre Spring MVC, Spring WebFlux e Virtual Threads sob alta concorrência",
+  autor: "Luís Miguel de Jesus Oliveira",
+  orientador: "Leandro Costa Souza",
   // co-orientador: "Prof. Me. Nome do Coorientador",
-  data-banca: datetime(year: 2026, month: 12, day: 10),
+  data-banca: datetime(year: 2027, month: 01, day: 01),
   // O primeiro membro é o orientador (marcado como tal na folha de aprovação).
   banca: (
-    [Prof. Dr. Nome do Orientador (IFBA)],
+    [Prof. Dr. Leandro Costa Souza (IFBA)],
     [Prof. Me. Nome do Avaliador 1 (IFBA)],
     [Prof. Me. Nome do Avaliador 2 (IFBA)],
   ),

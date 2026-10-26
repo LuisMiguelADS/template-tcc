@@ -11,79 +11,30 @@
 
 == Contextualização <sec-contextualizacao>
 
-#orientacao[
-  DEVE situar o tema e o cenário real em que o problema aparece, sempre com fontes.
-  NÃO DEVE apresentar a solução, a ferramenta ou a tecnologia do trabalho — a proposta só aparece
-  na @sec-hipotese. NÃO DEVE adiantar resultados nem trazer citação longa.
-]
-
-// Sigla: a 1ª ocorrência exige `long:` e escreve "Nome por extenso (SIGLA)";
-// as seguintes escrevem só a sigla. A Lista de abreviaturas e siglas é gerada sozinha.
-O #abbrev("ifba", long: "Instituto Federal de Educação, Ciência e Tecnologia da Bahia") oferece, no campus Santo Antônio de Jesus, o curso de #abbrev("ads", long: "Análise e Desenvolvimento de Sistemas"). Nas demais menções, basta escrever #abbrev("ifba") ou #abbrev("ads").
-
-// Glossário: o termo aparece normal no texto e a definição vai para o Glossário, no fim.
-Descreva o cenário em que o problema ocorre. Termos técnicos que o leitor pode não conhecer, como #gloss("deploy")[Implantação de uma versão do software em um ambiente de execução.], podem ser definidos no glossário. Toda afirmação sobre o cenário precisa de fonte #cite("sommerville2011")#footnote[Notas de rodapé servem para explicações curtas que interromperiam o texto. Use com moderação.].
-
-#figura(
-  image("../assets/imagens/logo.svg", width: 40%),
-  caption: [Exemplo de figura com fonte de terceiros],
-  source: [Adaptado de #prose("typstdocs")],
-) <fig-exemplo-contexto>
-
-Toda figura precisa ser citada no texto antes ou logo depois de aparecer, como na @fig-exemplo-contexto. #lorem(40)
+Com o avanço na utilização da arquitetura de microsserviços na criação de novos sistemas, valorizado pelo seus benefícios na computação em nuvem, procura-se formas eficientes para otimizar o uso de recursos computacionais e capacidade de atender cenários de alta concorrência sem aumentar de forma significativa os custos operacionais. Ao longo da história do Java a abordagem bloqueante do Spring MVC, na qual cada requisição consome uma Thread do sistema para cada tarefa do início ao fim, sempre foi predominante nas aplicações. Porém este modelo gera gargalos de memória em cenários de alta concorrência, em busca de contornar este problema a programação reativa do Spring WebFlux ganhou força, a Thread agora apenas recebe a tarefa e manda executar em segundo plano, ficando livre para receber novas tarefas. Diante deste embate entre as duas abordagens surgiu no Java 21 o Project Loom, trazendo Threads Virtuais para o ecossistema Java, elas são significativamente mais leves que as Threads da máquina, com isso é possível instanciar milhares de Threads Virtuais e designar uma para cada tarefa, onde promete equilibrar esse cenário com a simplicidade da abordagem bloqueante e a eficiência da abordagem reativa.
 
 == Problema de pesquisa <sec-problema>
 
-#orientacao[
-  DEVE formular o problema de forma explícita, de preferência como pergunta, e dizer o que fica
-  fora do escopo. NÃO DEVE ser uma solução disfarçada, como "o problema é que não existe
-  o sistema X".
-]
+Embora seja reconhecido os benefícios da abordagem reativa presente no Java com Spring WebFlux e o surgimento das Threads Virtuais no Java 21 com o Project Loom, identifica-se uma certa escassez em dados experimentais e concretos que comparem os impactos na utilização dessas três abordagens no cenário de microsserviços sob o mesmo ambiente de teste e submetido a testes de carga.
 
-Diante do cenário descrito, este trabalho investiga a seguinte questão: _como ...?_ #lorem(30)
+== Hipótese <sec-hipotese>
 
-Fica fora do escopo deste trabalho ...
-
-== Hipótese ou pressuposto da solução <sec-hipotese>
-
-#orientacao[
-  DEVE ficar exatamente aqui: depois do problema e antes dos objetivos. É o único lugar
-  do capítulo em que a proposta de solução aparece. DEVE ser testável: o Capítulo 5 precisa
-  conseguir dizer se ela se sustentou.
-]
-
-Parte-se do pressuposto de que ... #lorem(30)
+Projeta-se que a utilização das Threads Virtuais do Project Loom entregue resultados eficientes em questões de escalabilidade e uso de recursos computacionais, reduzindo o Context Switching causado pela abordagem bloqueante do Spring MVC e chegando a resultados parecidos ou superiores ao Spring WebFlux. Dessa forma, superando de forma significativa a abordagem bloqueante e mantendo o desenvolvimento mais prático e simples anulando a complexidade da abordagem reativa.
 
 == Objetivo geral <sec-objetivo-geral>
 
-#orientacao[
-  Uma frase, com um único verbo no infinitivo, que responde ao problema da @sec-problema.
-  NÃO DEVE ser um passo de método, como "fazer revisão bibliográfica".
-]
-
-Desenvolver ... para ...
+Analisar os impactos das abordagens bloqueante, não bloqueante e das Threads Virtuais em termos de escalabilidade, desempenho e consumo de recursos computacionais, em um sistema Java sob alta concorrência.
 
 == Objetivos específicos <sec-objetivos-especificos>
 
-#orientacao[
-  Lista NÃO numerada, com marcador `-`, de 3 a 5 itens, cada um com um verbo no
-  infinitivo e verificável nas Considerações finais. Evite verbos vagos: conhecer,
-  entender, compreender, estudar.
-]
-
-- Levantar ...;
-- Modelar ...;
-- Implementar ...;
-- Avaliar ....
+Desenvolver microsserviços Java para as três abordagens, mantendo de maneira rígida as regras de negócio, infraestrutura de banco de dados e o ambiente de execução.
+Realizar testes de carga de forma controlada simulando cenários de alta concorrência de I/O.
+Coletar e analisar as métricas de desempenho e recursos, como throughout, tempo de resposta, latência p95 e p99, taxas de erro, overhead de memória RAM e uso de CPU.
+Comparar de forma prática os resultados para fornecer um caminho analítico que ajude na tomada de decisão arquitetural em ambientes de microsserviços suscetíveis a alta concorrência de I/O.
 
 == Justificativa <sec-justificativa>
 
-#orientacao[
-  DEVE explicar por que o problema importa, com evidências: dados, fontes, contexto.
-  NÃO DEVE se basear só em opinião nem repetir a contextualização.
-]
-
-#lorem(60)
+O desenvolvimento deste trabalho justifica-se pela complexidade na gestão de concorrência em sistemas Java baseados em microsserviços. Embora o ecossistema Java aborde individualmente diferentes modelos de concorrência, no levantamento bibliográfico realizado observa-se uma escassez de estudos comparativos diretos quanto ao impacto dessas escolhas no consumo de recursos e no desempenho. Assim, a pesquisa mostra-se relevante ao fornecer recursos técnicos para tomadas de decisões na escolha do design arquitetural, auxiliando no desenvolvimento de sistemas mais resilientes e economicamente sustentáveis, que otimizam o hardware existente antes de recorrer ao aumento da capacidade em ambientes de nuvem.
 
 == Organização do trabalho <sec-organizacao>
 
