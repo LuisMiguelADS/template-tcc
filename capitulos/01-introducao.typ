@@ -11,30 +11,39 @@
 
 == Contextualização <sec-contextualizacao>
 
-Com o avanço na utilização da arquitetura de microsserviços na criação de novos sistemas, valorizado pelo seus benefícios na computação em nuvem, procura-se formas eficientes para otimizar o uso de recursos computacionais e capacidade de atender cenários de alta concorrência sem aumentar de forma significativa os custos operacionais. Ao longo da história do Java a abordagem bloqueante do Spring MVC, na qual cada requisição consome uma Thread do sistema para cada tarefa do início ao fim, sempre foi predominante nas aplicações. Porém este modelo gera gargalos de memória em cenários de alta concorrência, em busca de contornar este problema a programação reativa do Spring WebFlux ganhou força, a Thread agora apenas recebe a tarefa e manda executar em segundo plano, ficando livre para receber novas tarefas. Diante deste embate entre as duas abordagens surgiu no Java 21 o Project Loom, trazendo Threads Virtuais para o ecossistema Java, elas são significativamente mais leves que as Threads da máquina, com isso é possível instanciar milhares de Threads Virtuais e designar uma para cada tarefa, onde promete equilibrar esse cenário com a simplicidade da abordagem bloqueante e a eficiência da abordagem reativa.
+Com a crescente adoção da arquitetura de microsserviços no desenvolvimento de novos sistemas, valorizado pelo seus benefícios como escalabilidade, manutenibilidade, agilidade e autonomia das equipes, procuram-se formas eficientes para atender cenários de alta concorrência impulsionado pelo próprio modelo arquitetural, sem aumentar de forma siginificativa os custos operacionais @devalla2024. Ao longo da história do Java, a abordagem bloqueante baseada no modelo clássico de threads, na qual cada requisição ocupa integralmente uma thread do sistema para cada tarefa, sempre foi predominante nas aplicações @jep444. Porém, este modelo oferece graves gargalos em cenários de alta concorrência, em busca de contornar este problema a programação reativa do Spring WebFlux ganhou força, onde a thread do pool apenas recebe a tarefa e delega a execução, ficando livre para novas solicitações @devalla2024. Diante deste embate entre as duas abordagens, surgiu no Java 21 o Project Loom, trazendo Threads Virtuais para o ecossistema Java @jep444. Por serem significativamente mais leves que as threads do sistema operacional, é possível instanciar milhares delas e designar uma para cada tarefa, prometendo equilibrar esse cenário ao unir a simplicidade da abordagem bloqueante com a eficiência da abordagem reativa @devalla2024.
+
 
 == Problema de pesquisa <sec-problema>
 
-Embora seja reconhecido os benefícios da abordagem reativa presente no Java com Spring WebFlux e o surgimento das Threads Virtuais no Java 21 com o Project Loom, identifica-se uma certa escassez em dados experimentais e concretos que comparem os impactos na utilização dessas três abordagens no cenário de microsserviços sob o mesmo ambiente de teste e submetido a testes de carga.
+Embora a abordagem não bloqueante do Spring WebFlux tenha surgido para contornar gargalos da abordagem bloqueante do Spring MVC, sua adoção enfrenta barreiras devido a maior complexidade de desenvolvimento, manutenção e depuração do código @devalla2024. Diante do surgimento das threads virtuais introduzida na versão 21 do Java a partir do Project Loom, espera-se alcançar a eficiência da abordagem não bloqueante mantendo a simplicidade de desenvolvimento do modelo bloqueante @jep444, mas identifica-se uma escassez de avaliações experimentais diretas comparando essas três abordagens sob o mesmo ambiente padronizado de microsserviços.  
+
+Diante deste cenário, submetidos as mesmas condições de infraestrutura e testes de carga intensivos de I/O em patamares graduais de concorrência de 100, 500, 1.000, 2.000, 5.000 e 10.000 usuário simultâneos, como as abordagens baseadas em Spring MVC, Spring WebFlux e Threads Virtuais se comparam em termos de throughout, latência p95 e p99, taxa de erros e consumo de memória RAM e CPU?
+
+Ficam de fora do escopo deste trabalho:
+- Mensurar ou analisar de forma direta os custos financeiros em provedores de infraestrutura em nuvem.
+- Comparação com frameworks ou runtimes de outros ecossistemas.
+- Avaliação de experiência do usuário ou teste de usabilidade.
+- 
 
 == Hipótese <sec-hipotese>
 
-Projeta-se que a utilização das Threads Virtuais do Project Loom entregue resultados eficientes em questões de escalabilidade e uso de recursos computacionais, reduzindo o Context Switching causado pela abordagem bloqueante do Spring MVC e chegando a resultados parecidos ou superiores ao Spring WebFlux. Dessa forma, superando de forma significativa a abordagem bloqueante e mantendo o desenvolvimento mais prático e simples anulando a complexidade da abordagem reativa.
+Sob condições intensivas de carga e operações predominantemente limitadas por I/O, projeta-se que o modelo de threads virtuais do Project Loom apresente desempenho e escalabilidade superiores à abordagem síncrona tradicional do Spring MVC, alcançando um throughput e uma latência p95-p99 próximos aos do Spring WebFlux. Em termos de consumo de recursos computacionais, espera-se que as threads virtuais reduzam o uso de CPU e o tempo gasto com troca de contexto em relação ao Spring MVC, mantendo uma taxa de erros reduzida e exigindo um overhead de memória RAM significativamente inferior ao das threads de plataforma do sistema operacional.
 
 == Objetivo geral <sec-objetivo-geral>
 
-Analisar os impactos das abordagens bloqueante, não bloqueante e das Threads Virtuais em termos de escalabilidade, desempenho e consumo de recursos computacionais, em um sistema Java sob alta concorrência.
+Analisar os impactos das abordagens bloqueante, não bloqueante e das threads virtuais em termos de escalabilidade, desempenho e consumo de recursos computacionais, em um sistema Java sob alta concorrência.
 
 == Objetivos específicos <sec-objetivos-especificos>
 
-Desenvolver microsserviços Java para as três abordagens, mantendo de maneira rígida as regras de negócio, infraestrutura de banco de dados e o ambiente de execução.
-Realizar testes de carga de forma controlada simulando cenários de alta concorrência de I/O.
-Coletar e analisar as métricas de desempenho e recursos, como throughout, tempo de resposta, latência p95 e p99, taxas de erro, overhead de memória RAM e uso de CPU.
-Comparar de forma prática os resultados para fornecer um caminho analítico que ajude na tomada de decisão arquitetural em ambientes de microsserviços suscetíveis a alta concorrência de I/O.
+- Desenvolver microsserviços Java para as três abordagens, mantendo de maneira rígida as regras de negócio, infraestrutura de banco de dados e o ambiente de execução;
+- Realizar testes de carga de forma controlada simulando cenários de alta concorrência de I/O;
+- Coletar e analisar as métricas de desempenho e recursos, como throughout, tempo de resposta, latência p95 e p99, taxas de erro, overhead de memória RAM e uso de CPU;
+- Comparar de forma prática os resultados para fornecer um caminho analítico que ajude na tomada de decisão arquitetural em ambientes de microsserviços suscetíveis a alta concorrência de I/O.
 
 == Justificativa <sec-justificativa>
 
-O desenvolvimento deste trabalho justifica-se pela complexidade na gestão de concorrência em sistemas Java baseados em microsserviços. Embora o ecossistema Java aborde individualmente diferentes modelos de concorrência, no levantamento bibliográfico realizado observa-se uma escassez de estudos comparativos diretos quanto ao impacto dessas escolhas no consumo de recursos e no desempenho. Assim, a pesquisa mostra-se relevante ao fornecer recursos técnicos para tomadas de decisões na escolha do design arquitetural, auxiliando no desenvolvimento de sistemas mais resilientes e economicamente sustentáveis, que otimizam o hardware existente antes de recorrer ao aumento da capacidade em ambientes de nuvem.
+O desenvolvimento deste trabalho justifica-se pela complexidade na gestão de concorrência em sistemas Java baseados em microsserviços @devalla2024. Embora o ecossistema Java aborde individualmente diferentes modelos de concorrência, no levantamento bibliográfico realizado observa-se uma escassez de estudos experimentais que confrontem diretamente e de forma integrada o desempenho dessas abordagens sob idênticas condições de carga. Assim, a pesquisa mostra-se relevante ao fornecer recursos técnicos para tomadas de decisão arquitetural, auxiliando no desenvolvimento de sistemas mais resilientes e economicamente sustentáveis, capazes de otimizar o hardware existente antes de recorrer ao escalonamento horizontal ou vertical em ambientes de nuvem @aws_microservices.
 
 == Organização do trabalho <sec-organizacao>
 
