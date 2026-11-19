@@ -1,0 +1,5 @@
+**/target
+resultados
+.git
+.idea
+*.md

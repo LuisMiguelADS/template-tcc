@@ -14,12 +14,14 @@
   de servir para qualquer TCC.
 ]
 
+== Retomada dos objetivos <sec-retomada>
+
 Este trabalho teve como objetivo geral ... #lorem(40)
 
 Quanto aos objetivos específicos, ... #lorem(40)
 
 A hipótese apresentada na @sec-hipotese ... #lorem(30)
 
-== Trabalhos futuros
+== Trabalhos futuros <sec-trabalhos-futuros>
 
 #lorem(40)

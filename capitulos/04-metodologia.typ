@@ -20,7 +20,7 @@
 
 Quanto à natureza, esta pesquisa classifica-se como aplicada, pois ... #cite("wazlawick2014"). #lorem(30)
 
-== Método de desenvolvimento <sec-metodo>
+== Método experimental <sec-metodo>
 
 #orientacao[
   Descreva o método usado de fato (ex.: Scrum adaptado, prototipação) e como foi aplicado; NÃO
@@ -62,7 +62,7 @@ As etapas foram conduzidas da seguinte forma:
 
 #lorem(30)
 
-== Levantamento de requisitos <sec-levantamento>
+== Definição do serviço de referência <sec-levantamento>
 
 #orientacao[
   Diga como os requisitos foram levantados: com quem e com quais técnicas (entrevista,
@@ -72,7 +72,7 @@ As etapas foram conduzidas da seguinte forma:
 
 Os requisitos foram levantados por meio de entrevistas semiestruturadas com ..., conforme o roteiro do Apêndice A. #lorem(30)
 
-== Tecnologias e ferramentas <sec-ferramentas>
+== Ambiente experimental e ferramentas <sec-ferramentas>
 
 #orientacao[Justifique a escolha de cada tecnologia e ferramenta. A teoria sobre elas fica na @sec-tecnologias.]
 
@@ -88,7 +88,7 @@ Os requisitos foram levantados por meio de entrevistas semiestruturadas com ...,
   caption: [Tecnologias e ferramentas utilizadas],
 ) <qua-ferramentas>
 
-== Procedimentos de avaliação <sec-avaliacao>
+== Cenários de carga e métricas <sec-avaliacao>
 
 #orientacao[
   Defina como o software será avaliado: métricas, critérios, participantes e instrumentos. O @cap-resultados segue exatamente este plano. Métricas com fórmula entram como

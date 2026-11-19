@@ -18,7 +18,7 @@
   O que o texto afirma que foi implementado DEVE existir no repositório.
 ]
 
-== Requisitos <sec-requisitos>
+== Requisitos do serviço <sec-requisitos>
 
 #orientacao[Liste os requisitos funcionais e não funcionais que saíram do levantamento da @sec-levantamento.]
 
@@ -36,7 +36,7 @@ O @qua-requisitos apresenta os requisitos funcionais (RF) e não funcionais (RNF
   caption: [Requisitos do sistema],
 ) <qua-requisitos>
 
-== Arquitetura <sec-arquitetura>
+== Arquitetura das três implementações <sec-arquitetura>
 
 #orientacao[Apresente a arquitetura com diagrama e explique cada parte.]
 
@@ -46,7 +46,7 @@ A @fig-arquitetura mostra a arquitetura do sistema. O diagrama foi desenhado em 
 
 #lorem(40)
 
-== Modelagem <sec-modelagem>
+== Modelagem do domínio <sec-modelagem>
 
 #orientacao[Traga a modelagem (casos de uso, classes, dados) coerente com os requisitos.]
 
@@ -117,7 +117,7 @@ As telas de login e de cadastro do aplicativo aparecem lado a lado na @fig-telas
   caption: [Telas de login e de cadastro do aplicativo],
 ) <fig-telas>
 
-== Testes <sec-testes>
+== Testes funcionais e de carga <sec-testes>
 
 #orientacao[Descreva os testes realizados e o que cobrem: unidade, integração, aceitação.]
 

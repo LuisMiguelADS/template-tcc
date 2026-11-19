@@ -15,7 +15,7 @@
   aluno nem trazer resultados, nem ser "colcha de retalhos", um parágrafo por autor. Os títulos das seções podem ser adaptados ao tema.
 ]
 
-== Conceitos da área do problema <sec-conceitos>
+== Concorrência e escalabilidade em aplicações Java <sec-conceitos>
 
 #orientacao[Conceitos da área do problema indispensáveis para entender o restante do texto.]
 
@@ -39,7 +39,7 @@ Há convergência na literatura sobre a importância da modularidade #cite("mart
 // Referências. Sempre que conseguir o original, cite-o diretamente.
 O custo de corrigir um defeito cresce à medida que o projeto avança #apud("Boehm", "1981", "sommerville2011", supplement: [p. 23]). Na forma narrativa, #apud("Boehm", "1981", "sommerville2011", narrativo: true) chega à mesma conclusão.
 
-== Tecnologias utilizadas <sec-tecnologias>
+== Spring MVC, Spring WebFlux e Project Loom <sec-tecnologias>
 
 #orientacao[
   Explique por que cada tecnologia importa para o problema; NÃO DEVE virar tutorial nem manual de
@@ -59,7 +59,7 @@ Para #prose("newman2021", supplement: [p. 2]), microsserviços são #citacao-cur
 
 #lorem(40)
 
-== Engenharia de software <sec-engenharia>
+== Microsserviços e avaliação de desempenho <sec-engenharia>
 
 #orientacao[Conceitos de engenharia de software que o trabalho aplica: processo, requisitos, arquitetura, testes.]
 

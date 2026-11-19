@@ -18,7 +18,7 @@
   NÃO DEVE apresentar conceito teórico novo, mudar o método nem afirmar algo sem evidência.
 ]
 
-== Desempenho
+== Desempenho por nível de concorrência <sec-desempenho>
 
 A @tab-desempenho resume o tempo de resposta e o uso de CPU medidos em cada módulo. Os dados vêm de `data/resultados.csv`: atualize o CSV e a tabela acompanha.
 
@@ -48,7 +48,7 @@ Quando células precisam ser mescladas, escreva a tabela à mão com `table.cell
 
 #lorem(40)
 
-== Avaliação com usuários
+== Consumo de recursos <sec-recursos>
 
 Gráficos feitos com cetz-plot ficam em `assets/graficos/` e são importados como figuras, como a @fig-pizza e a @fig-barras.
 
@@ -64,12 +64,12 @@ Gráficos feitos com cetz-plot ficam em `assets/graficos/` e são importados com
 //   source: none           remove a linha; evite, a ABNT pede fonte em toda ilustração
 #figura(barras, caption: [Número de participantes por ano], source: myself) <fig-barras>
 
-== Discussão
+== Discussão dos resultados <sec-discussao>
 
 #orientacao[Compare os resultados com os trabalhos correlatos do @cap-correlatos e responda à hipótese da @sec-hipotese.]
 
 #lorem(60)
 
-== Limitações
+== Limitações <sec-limitacoes>
 
 #lorem(30)

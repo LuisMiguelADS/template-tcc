@@ -1,0 +1,5 @@
+target/
+resultados/*
+!resultados/.gitkeep
+.idea/
+*.iml

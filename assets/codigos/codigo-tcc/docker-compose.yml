@@ -1,0 +1,128 @@
+name: tcc-comparacao
+
+# Limites de rede comuns a todos os containers
+x-container: &container
+  ulimits:
+    nofile:
+      soft: 1048576
+      hard: 1048576
+  sysctls:
+    net.core.somaxconn: 65535
+
+# Bloco único das APIs: CPU, memória, JVM e acesso ao banco definidos UMA vez, então as três variantes têm limites idênticos por construção
+x-api: &api
+  <<: *container
+  cpus: ${API_CPUS}
+  mem_limit: ${API_MEM}
+  memswap_limit: ${API_MEM}
+  depends_on:
+    - mock-db
+
+# Variáveis de ambiente comuns às três APIs
+x-api-env: &api-env
+  DB_BASE_URL: http://mock-db:8080
+  DOWNSTREAM_MAX_CONNECTIONS: ${DOWNSTREAM_MAX_CONNECTIONS}
+  DOWNSTREAM_TIMEOUT_MS: ${DOWNSTREAM_TIMEOUT_MS}
+  JVM_OPTS: ${API_JVM_OPTS}
+
+# Build com o Dockerfile único, que compila o módulo Java com Maven dentro do Docker
+x-build-args: &build-args
+  BUILD_IMAGE: ${BUILD_IMAGE}
+  RUNTIME_IMAGE: ${RUNTIME_IMAGE}
+
+services:
+  # Banco simulado
+  mock-db:
+    <<: *container
+    image: tcc/mock-db:local
+    build:
+      context: .
+      args:
+        <<: *build-args
+        MODULE: mock-db
+    container_name: tcc-mock-db
+    cpus: ${MOCK_CPUS}
+    mem_limit: ${MOCK_MEM}
+    memswap_limit: ${MOCK_MEM}
+    ports:
+      - "18090:8080"
+    environment:
+      MOCK_DB_LATENCY_MS: ${DB_LATENCY_MS}
+      MOCK_DB_JITTER_MS: ${DB_JITTER_MS}
+      JVM_OPTS: ${MOCK_JVM_OPTS}
+
+  # Variante mvc: api-servlet com threads de plataforma
+  api-mvc:
+    <<: *api
+    image: tcc/api-servlet:local
+    build:
+      context: .
+      args:
+        <<: *build-args
+        MODULE: api-servlet
+    container_name: tcc-api-mvc
+    ports:
+      - "8081:8080"
+    environment:
+      <<: *api-env
+      MODEL: mvc
+      VIRTUAL_THREADS: "false"
+      TOMCAT_MAX_THREADS: ${TOMCAT_MAX_THREADS}
+
+  # Variante webflux: api-webflux
+  api-webflux:
+    <<: *api
+    image: tcc/api-webflux:local
+    build:
+      context: .
+      args:
+        <<: *build-args
+        MODULE: api-webflux
+    container_name: tcc-api-webflux
+    ports:
+      - "8082:8080"
+    environment:
+      <<: *api-env
+      MODEL: webflux
+
+  # Variante vt: mesma imagem da mvc, só liga as threads virtuais
+  api-vt:
+    <<: *api
+    image: tcc/api-servlet:local
+    build:
+      context: .
+      args:
+        <<: *build-args
+        MODULE: api-servlet
+    container_name: tcc-api-vt
+    ports:
+      - "8083:8080"
+    environment:
+      <<: *api-env
+      MODEL: vt
+      VIRTUAL_THREADS: "true"
+      TOMCAT_MAX_THREADS: ${TOMCAT_MAX_THREADS}
+
+  # Gerador de carga; a API alvo é escolhida pela variável API que pode ser mvc, webflux ou vt
+  k6:
+    <<: *container
+    image: ${K6_IMAGE}
+    profiles:
+      - load
+    cpus: ${K6_CPUS}
+    volumes:
+      - ./k6:/scripts:ro
+      - ./resultados:/resultados
+    environment:
+      API_URL: http://api-${API}:8080
+      USERS: ${USERS}
+      QUERIES: ${QUERIES}
+      RAMP_SEC: ${RAMP_SEC}
+      WARMUP_SEC: ${WARMUP_SEC}
+      MEASUREMENT_SEC: ${MEASUREMENT_SEC}
+      LOAD_MODEL: ${LOAD_MODEL}
+      RATE_RPS: ${RATE_RPS}
+      THINK_MS: ${THINK_MS}
+      RUN_ID: ${RUN_ID}
+      OUT_DIR: ${OUT_DIR}
+    command: ["run", "/scripts/carga.js"]
